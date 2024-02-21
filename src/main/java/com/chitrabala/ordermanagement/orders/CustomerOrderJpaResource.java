@@ -21,6 +21,7 @@ import com.chitrabala.ordermanagement.orders.repository.CustomerJpaRepository;
 import com.chitrabala.ordermanagement.orders.repository.OrderJpaRepository;
 
 @CrossOrigin("http://localhost:4200")
+//@CrossOrigin("https://chitrabalafrontend.uk.r.appspot.com")
 @RestController
 public class CustomerOrderJpaResource {
 
@@ -29,6 +30,11 @@ public class CustomerOrderJpaResource {
 	
 	@Autowired
 	public OrderJpaRepository orderJpaRepository;
+	
+	@GetMapping("/helloworld")
+	public String getHelloWorld(){
+		return "rest api is working fine";
+	}
 	
 	@PostMapping("/chitrabala/addorder")
 	public ResponseEntity<Void> addNewOrder(@RequestBody Customer customerData){
