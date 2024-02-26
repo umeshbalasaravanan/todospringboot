@@ -1,7 +1,12 @@
 package com.chitrabala.ordermanagement.orders;
 
 import java.net.URI;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -31,6 +36,8 @@ public class CustomerOrderJpaResource {
 	@Autowired
 	public OrderJpaRepository orderJpaRepository;
 	
+	SimpleDateFormat sdf = new SimpleDateFormat("mm-dd-yyyy");
+	
 	@GetMapping("/helloworld")
 	public String getHelloWorld(){
 		return "rest api is working fine";
@@ -45,8 +52,26 @@ public class CustomerOrderJpaResource {
 	}
 	
 	@GetMapping("/chitrabala/getorders")
-	public List<Customer> getAllCustomers(){
-		return customerJpaRepository.findAll();
+	public List<Customer> getCurrentCustomers(){
+		List<Customer> customers =  customerJpaRepository.findAll();
+//		List<Customer> filteredCustomers = new ArrayList<Customer>();
+//		for(Customer customer: customers) {
+//			if((sdf.format(customer.getOrder().getOrder_date()).compareTo(sdf.format(new Date())) <= 0 && 
+//					(sdf.format(customer.getOrder().getDelivery_date()).compareTo(sdf.format(new Date())) >= 0)) ||
+//					(sdf.format(customer.getOrder().getDelivery_date()).compareTo(sdf.format(new Date())) < 0) && 
+//					(!customer.getOrder().isCompleted() || customer.getOrder().getRemaining_amount() > Long.valueOf(0))
+//					) {
+//				filteredCustomers.add(customer);
+//			}
+			
+			Predicate<Customer> currentCustomers = customer -> ((sdf.format(customer.getOrder().getOrder_date()).compareTo(sdf.format(new Date())) <= 0 && 
+					(sdf.format(customer.getOrder().getDelivery_date()).compareTo(sdf.format(new Date())) >= 0)) ||
+					((sdf.format(customer.getOrder().getDelivery_date()).compareTo(sdf.format(new Date())) <= 0) && 
+					(!customer.getOrder().isCompleted() || customer.getOrder().getRemaining_amount() > Long.valueOf(0))));
+	
+		var filteredCustomers = customers.stream().filter(currentCustomers).collect((Collectors.toList()));
+		
+		return filteredCustomers;
 	}
 	
 	@GetMapping("/chitrabala/order/{id}")
