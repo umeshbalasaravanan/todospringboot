@@ -36,7 +36,7 @@ public class CustomerOrderJpaResource {
 	@Autowired
 	public OrderJpaRepository orderJpaRepository;
 	
-	SimpleDateFormat sdf = new SimpleDateFormat("mm-dd-yyyy");
+	SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 	
 	@GetMapping("/helloworld")
 	public String getHelloWorld(){
@@ -58,11 +58,12 @@ public class CustomerOrderJpaResource {
 //		for(Customer customer: customers) {
 //			if((sdf.format(customer.getOrder().getOrder_date()).compareTo(sdf.format(new Date())) <= 0 && 
 //					(sdf.format(customer.getOrder().getDelivery_date()).compareTo(sdf.format(new Date())) >= 0)) ||
-//					(sdf.format(customer.getOrder().getDelivery_date()).compareTo(sdf.format(new Date())) < 0) && 
-//					(!customer.getOrder().isCompleted() || customer.getOrder().getRemaining_amount() > Long.valueOf(0))
+//					((sdf.format(customer.getOrder().getDelivery_date()).compareTo(sdf.format(new Date())) <= 0) && 
+//					(!customer.getOrder().isCompleted() || customer.getOrder().getRemaining_amount() > Long.valueOf(0)))
 //					) {
 //				filteredCustomers.add(customer);
 //			}
+//		}
 			
 			Predicate<Customer> currentCustomers = customer -> ((sdf.format(customer.getOrder().getOrder_date()).compareTo(sdf.format(new Date())) <= 0 && 
 					(sdf.format(customer.getOrder().getDelivery_date()).compareTo(sdf.format(new Date())) >= 0)) ||
