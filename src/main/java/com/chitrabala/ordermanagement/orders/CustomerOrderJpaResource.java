@@ -36,7 +36,7 @@ public class CustomerOrderJpaResource {
 	@Autowired
 	public OrderJpaRepository orderJpaRepository;
 	
-	SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 	
 	@GetMapping("/helloworld")
 	public String getHelloWorld(){
